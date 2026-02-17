@@ -1,3 +1,5 @@
+![CI](https://github.com/Arquiron/fastapi-b2b-saas-api/actions/workflows/ci.yml/badge.svg)
+
 # B2B API (FastAPI) — Multi-tenant
 
 API FastAPI focada em produto B2B: multi-tenant via header `X-Tenant-ID`, CRUD de clientes e testes automatizados.
