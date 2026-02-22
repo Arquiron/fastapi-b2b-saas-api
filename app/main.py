@@ -3,6 +3,7 @@ from app.core.config import settings
 from app.core.tenant import get_tenant_id
 from app.customers.router import router as customers_router
 from fastapi.openapi.utils import get_openapi
+from app.db.deps import verify_admin
 
 tags_metadata = [
     {"name": "customers", "description": "CRUD de clientes"},
@@ -17,6 +18,10 @@ app = FastAPI(
 )
 
 app.include_router(customers_router)
+
+@app.post("/tenants", dependencies=[Depends(verify_admin)])
+def create_tenant():
+    ...
 
 @app.get("/health")
 def health():

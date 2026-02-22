@@ -26,4 +26,9 @@ jobs:
           pip install pytest
 
       - name: Run tests
+        env:
+          API_KEY_PEPPER: ${{ secrets.API_KEY_PEPPER }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pytest -q
+
+        
