@@ -1,6 +1,9 @@
 import hashlib
 import secrets
 from app.core.config import settings
+import os
+
+PEPPER = os.getenv("API_KEY_PEPPER")
 
 def hash_api_key(api_key: str) -> str:
     raw = (settings.api_key_pepper + api_key).encode("utf-8")

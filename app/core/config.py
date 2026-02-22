@@ -4,7 +4,8 @@ class Settings(BaseSettings):
     app_name: str = "B2B API"
     env: str = "dev"
     api_key_pepper: str
-
+    database_url: str
+    
     class Config:
         env_file = ".env"
 
