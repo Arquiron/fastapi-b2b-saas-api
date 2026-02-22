@@ -2,38 +2,42 @@
 
 # 🚀 FastAPI B2B SaaS API (Multi-Tenant)
 
-API REST construída com FastAPI focada em arquitetura B2B SaaS multi-tenant com autenticação via API Key.
+API REST desenvolvida com **FastAPI**, utilizando arquitetura **multi-tenant** com autenticação via **API Key**.
 
-Projeto estruturado com separação de camadas (core, db, tenants, customers) e preparado para evolução como produto real.
+Projeto estruturado com separação de responsabilidades (core, db, tenants, customers) e preparado para evoluir como produto SaaS real.
 
 ---
 
 ## 🏗 Arquitetura
 
-- 🔐 Autenticação por **API Key**
+- 🔐 Autenticação via **X-API-Key**
 - 🏢 Isolamento por **Tenant**
-- 🧱 Estrutura modular
-- 📄 Documentação automática via Swagger
+- 🧱 Estrutura modular organizada por domínio
+- 📄 Documentação automática via Swagger (OpenAPI)
 - 🧪 Testes automatizados com Pytest
-- 🗄 Banco SQLite (dev) — preparado para migração futura
+- 🗄 SQLite (dev) – preparado para migração futura para PostgreSQL
 
 ---
 
-## 📌 Funcionalidades
+## 📌 Endpoints
 
 ### 👤 Customers
-- `POST /customers`
-- `GET /customers`
-- `GET /customers/{customer_id}`
-- `DELETE /customers/{customer_id}`
+
+- `POST /customers` – Criar cliente
+- `GET /customers` – Listar clientes
+- `GET /customers/{customer_id}` – Buscar cliente
+- `DELETE /customers/{customer_id}` – Remover cliente
 
 ### 🔎 Utilitários
-- `GET /health`
-- `GET /whoami`
+
+- `GET /health` – Health check
+- `GET /whoami` – Retorna o tenant autenticado
 
 ---
 
 ## 🔐 Autenticação
 
-A API utiliza autenticação via header:
+Todas as requisições protegidas exigem o header:
 
+```http
+X-API-Key: <sua_api_key>
