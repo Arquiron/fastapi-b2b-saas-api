@@ -5,11 +5,10 @@ from app.customers.router import router as customers_router
 from app.db.session import engine
 from app.db.base import Base
 from app.customers.db_model import Customer  # noqa: F401
+from app.tenants.db_model import Tenant  # noqa: F401
 
-app = FastAPI(title=settings.app_name, version="0.2.0")
+app = FastAPI(title=settings.app_name, version="0.2.0", swagger_ui_parameters={"persistAuthorization": True},)
 app.include_router(customers_router)
-
-Base.metadata.create_all(bind=engine)
 
 @app.get("/health")
 def health():

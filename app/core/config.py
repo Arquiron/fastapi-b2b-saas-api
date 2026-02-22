@@ -1,9 +1,11 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     app_name: str = "B2B API"
     env: str = "dev"
+    api_key_pepper: str
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    class Config:
+        env_file = ".env"
 
 settings = Settings()
