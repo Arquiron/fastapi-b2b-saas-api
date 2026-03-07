@@ -19,12 +19,14 @@ def create_customer(
     except ValueError as e:
         raise HTTPException(status_code=409, detail=str(e))
 
-@router.get("", response_model=list[CustomerOut])
+@router.get("")
 def list_customers(
+    page: int = 1,
+    size: int = 20,
     tenant_id: str = Depends(get_tenant_id),
     db: Session = Depends(get_db),
 ):
-    return repo.list_customers(db, tenant_id)
+    return repo.list_customers(db, tenant_id, page, size)
 
 @router.get("/{customer_id}", response_model=CustomerOut)
 def get_customer(

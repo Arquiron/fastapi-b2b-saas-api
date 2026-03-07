@@ -1,12 +1,16 @@
 from fastapi import Depends, FastAPI
+from fastapi.openapi.utils import get_openapi
+
 from app.core.config import settings
 from app.core.tenant import get_tenant_id
 from app.customers.router import router as customers_router
-from fastapi.openapi.utils import get_openapi
-from app.db.deps import verify_admin
+from app.tenants.router import router as tenants_router
+
+API_PREFIX = "/api/v1"
 
 tags_metadata = [
     {"name": "customers", "description": "CRUD de clientes"},
+    {"name": "tenants", "description": "Gestão de tenants (admin)"},
     {"name": "default", "description": "Utilitários"},
 ]
 
@@ -17,19 +21,20 @@ app = FastAPI(
     swagger_ui_parameters={"persistAuthorization": True},
 )
 
-app.include_router(customers_router)
+# tudo sob /api/v1
+app.include_router(customers_router, prefix=API_PREFIX)
+app.include_router(tenants_router, prefix=API_PREFIX)
 
-@app.post("/tenants", dependencies=[Depends(verify_admin)])
-def create_tenant():
-    ...
 
-@app.get("/health")
+@app.get(f"{API_PREFIX}/whoami", tags=["default"])
+def whoami(tenant_id: str = Depends(get_tenant_id)):
+    return {"tenant_id": tenant_id}
+
+
+@app.get("/health", tags=["default"])
 def health():
     return {"status": "ok", "env": settings.env}
 
-@app.get("/whoami")
-def whoami(tenant_id: str = Depends(get_tenant_id)):
-    return {"tenant_id": tenant_id}
 
 def custom_openapi():
     if app.openapi_schema:
@@ -49,10 +54,11 @@ def custom_openapi():
         "name": "X-API-Key",
     }
 
-    # aplica globalmente (o Swagger passa a enviar o header em tudo após Authorize)
+    # aplica autenticação por padrão (exceto endpoints que você decidir liberar)
     openapi_schema["security"] = [{"ApiKeyAuth": []}]
 
     app.openapi_schema = openapi_schema
     return app.openapi_schema
+
 
 app.openapi = custom_openapi
