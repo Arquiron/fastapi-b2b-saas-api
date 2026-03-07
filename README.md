@@ -2,7 +2,7 @@
 
 # 🚀 FastAPI B2B SaaS API (Multi-Tenant)
 
-API REST desenvolvida com **FastAPI**, utilizando arquitetura **multi-tenant** com autenticação via **API Key**.
+Production-style FastAPI backend implementing a multi-tenant B2B SaaS architecture with API Key authentication, tenant isolation, automated tests and CI pipeline.
 
 Projeto estruturado com separação de responsabilidades (core, db, tenants, customers) e preparado para evoluir como produto SaaS real.
 
@@ -23,10 +23,14 @@ Projeto estruturado com separação de responsabilidades (core, db, tenants, cus
 
 ### 👤 Customers
 
-- `POST /customers` – Criar cliente
-- `GET /customers` – Listar clientes
-- `GET /customers/{customer_id}` – Buscar cliente
-- `DELETE /customers/{customer_id}` – Remover cliente
+- `POST /api/v1/customers` – Criar cliente
+- `GET /api/v1/customers` – Listar clientes
+- `GET /api/v1/customers/{customer_id}` – Buscar cliente
+- `DELETE /api/v1/customers/{customer_id}` – Remover cliente
+
+### 🏢 Tenants (Admin)
+
+POST /api/v1/tenants – Criar tenant
 
 ### 🔎 Utilitários
 
@@ -35,9 +39,23 @@ Projeto estruturado com separação de responsabilidades (core, db, tenants, cus
 
 ---
 
+## Run locally
+
+```bash
+git clone https://github.com/Arquiron/fastapi-b2b-saas-api
+cd fastapi-b2b-saas-api
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+python create_tables.py
+
+uvicorn app.main:app --reload
+```
+
+Swagger UI:
+http://localhost:8000/docs
+
 ## 🔐 Autenticação
-
-Todas as requisições protegidas exigem o header:
-
-```http
-X-API-Key: <sua_api_key>
